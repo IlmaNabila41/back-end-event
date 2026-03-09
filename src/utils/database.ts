@@ -1,14 +1,18 @@
 import mongoose from "mongoose";
-import { DATABASE_URL } from "./env";
 
 const connect = async () => {
     try {
-        await mongoose.connect(DATABASE_URL, {
-            dbName: "db-event",
-        });
-        return Promise.resolve("Database Connected!");
+        const dbUrl = process.env.DATABASE_URL;
+
+        if (!dbUrl) {
+            throw new Error("Variabel DATABASE_URL tidak ditemukan di .env");
+        }
+
+        await mongoose.connect(dbUrl);
+        console.log("Database Connected Successfully!");
     } catch (error) {
-        return Promise.reject(error);
+        console.error("Database Connection Failed:", error);
+        process.exit(1);
     }
 };
 

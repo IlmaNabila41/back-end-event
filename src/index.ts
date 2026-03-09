@@ -1,13 +1,15 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
+import { setServers } from "node:dns/promises";
 import bodyParser from "body-parser";
-import authController from "./controllers/auth.controller";
 import router from "./routes/api";
 import db from "./utils/database"
-import { setServers } from "node:dns/promises";
-setServers(["1.1.1.1", "8.8.8.8"]);
 
 async function init() {
     try{
+        setServers(["1.1.1.1", "8.8.8.8"]);
         await db();
         console.log("Connected to the database successfully.");
 
